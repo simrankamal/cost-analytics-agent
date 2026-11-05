@@ -1,0 +1,96 @@
+regions: [us-east-1, us-west-2, eu-west-1, ap-south-1]
+usage_type_prefixes: [USE1-, USW2-, EU-, APS3-]
+
+skus:
+  - key: ec2_m6i_large
+    file: AmazonEC2
+    service_category: Compute
+    usage_type: BoxUsage:m6i.large
+    filters: {Instance Type: m6i.large, Operating System: Linux, Tenancy: Shared, Pre Installed S/W: NA, CapacityStatus: Used}
+    commitment: true
+  - key: ec2_c6i_xlarge
+    file: AmazonEC2
+    service_category: Compute
+    usage_type: BoxUsage:c6i.xlarge
+    filters: {Instance Type: c6i.xlarge, Operating System: Linux, Tenancy: Shared, Pre Installed S/W: NA, CapacityStatus: Used}
+    commitment: true
+  - key: ec2_r6i_large
+    file: AmazonEC2
+    service_category: Compute
+    usage_type: BoxUsage:r6i.large
+    filters: {Instance Type: r6i.large, Operating System: Linux, Tenancy: Shared, Pre Installed S/W: NA, CapacityStatus: Used}
+    commitment: true
+  - key: ebs_gp3
+    file: AmazonEC2
+    service_category: Storage
+    usage_type: EBS:VolumeUsage.gp3
+  - key: nat_hours
+    file: AmazonEC2
+    service_category: Networking
+    usage_type: NatGateway-Hours
+  - key: nat_bytes
+    file: AmazonEC2
+    service_category: Networking
+    usage_type: NatGateway-Bytes
+  - key: rds_pg_r6g_large
+    file: AmazonRDS
+    service_category: Databases
+    usage_type: InstanceUsage:db.r6g.large
+    filters: {Database Engine: PostgreSQL, Deployment Option: Single-AZ}
+    commitment: true
+  - key: elasticache_r6g_large
+    file: AmazonElastiCache
+    service_category: Databases
+    usage_type: NodeUsage:cache.r6g.large
+    filters: {Cache Engine: Redis}
+    commitment: true
+  - key: s3_standard_storage
+    file: AmazonS3
+    service_category: Storage
+    usage_type: TimedStorage-ByteHrs
+  - key: s3_put_requests
+    file: AmazonS3
+    service_category: Storage
+    usage_type: Requests-Tier1
+  - key: data_transfer_out
+    file: AWSDataTransfer
+    service_category: Networking
+    usage_type: DataTransfer-Out-Bytes
+    region_column: From Region Code
+    filters: {Transfer Type: AWS Outbound}
+  - key: alb_hours
+    file: AWSELB
+    service_category: Networking
+    usage_type: LoadBalancerUsage
+    filters: {Product Family: Load Balancer-Application}
+  - key: alb_lcu
+    file: AWSELB
+    service_category: Networking
+    usage_type: LCUUsage
+    filters: {Product Family: Load Balancer-Application}
+  - key: lambda_gb_seconds
+    file: AWSLambda
+    service_category: Compute
+    usage_type: Lambda-GB-Second
+  - key: lambda_requests
+    file: AWSLambda
+    service_category: Compute
+    usage_type: Request
+  - key: dynamodb_writes
+    file: AmazonDynamoDB
+    service_category: Databases
+    usage_type: WriteRequestUnits
+  - key: dynamodb_reads
+    file: AmazonDynamoDB
+    service_category: Databases
+    usage_type: ReadRequestUnits
+  - key: eks_cluster_hours
+    file: AmazonEKS
+    service_name: Amazon Elastic Kubernetes Service
+    service_category: Compute
+    usage_type: AmazonEKS-Hours:perCluster
+  - key: cloudwatch_logs_ingest
+    file: AmazonCloudWatch
+    service_name: Amazon CloudWatch
+    service_category: Management and Governance
+    usage_type: DataProcessing-Bytes

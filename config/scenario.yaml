@@ -1,0 +1,91 @@
+seed: 42
+start_date: 2025-04-01
+end_date: 2026-09-30
+
+billing_account: {id: "100000000000", name: Acme Analytics}
+
+accounts:
+  prod-core: {id: "100000000001", team: platform, env: prod}
+  prod-data: {id: "100000000002", team: data, env: prod}
+  staging: {id: "100000000003", team: platform, env: staging}
+  dev-sandbox: {id: "100000000004", team: engineering, env: dev}
+  shared-services: {id: "100000000005", team: sre, env: prod}
+
+# base: running count for hourly SKUs, stored GB for GB-Mo SKUs, daily quantity otherwise.
+# growth: monthly compound growth. weekend: multiplier on Sat/Sun. noise: daily coefficient of variation.
+workloads:
+  - {account: prod-core, region: us-east-1, sku: ec2_m6i_large, app: web-api, base: 40, growth: 0.01, weekend: 0.85, noise: 0.03}
+  - {account: prod-core, region: us-east-1, sku: ec2_c6i_xlarge, app: workers, base: 12, growth: 0.01, weekend: 0.8, noise: 0.05}
+  - {account: prod-core, region: us-east-1, sku: ebs_gp3, app: web-api, base: 20000, growth: 0.015, noise: 0.01}
+  - {account: prod-core, region: us-east-1, sku: nat_hours, app: network, base: 3, noise: 0}
+  - {account: prod-core, region: us-east-1, sku: nat_bytes, app: network, base: 800, growth: 0.01, weekend: 0.7, noise: 0.08}
+  - {account: prod-core, region: us-east-1, sku: alb_hours, app: web-api, base: 4, noise: 0}
+  - {account: prod-core, region: us-east-1, sku: alb_lcu, app: web-api, base: 20, growth: 0.01, weekend: 0.7, noise: 0.06}
+  - {account: prod-core, region: us-east-1, sku: rds_pg_r6g_large, app: orders-db, base: 4, noise: 0}
+  - {account: prod-core, region: us-east-1, sku: elasticache_r6g_large, app: sessions-cache, base: 3, noise: 0}
+  - {account: prod-core, region: us-east-1, sku: lambda_gb_seconds, app: event-handlers, base: 4000000, growth: 0.02, weekend: 0.75, noise: 0.07}
+  - {account: prod-core, region: us-east-1, sku: lambda_requests, app: event-handlers, base: 30000000, growth: 0.02, weekend: 0.75, noise: 0.07}
+  - {account: prod-core, region: us-east-1, sku: dynamodb_writes, app: orders, base: 50000000, growth: 0.02, weekend: 0.7, noise: 0.06}
+  - {account: prod-core, region: us-east-1, sku: dynamodb_reads, app: orders, base: 200000000, growth: 0.02, weekend: 0.7, noise: 0.06}
+  - {account: prod-core, region: us-east-1, sku: data_transfer_out, app: web-api, base: 1500, growth: 0.015, weekend: 0.75, noise: 0.07}
+  - {account: prod-core, region: us-east-1, sku: cloudwatch_logs_ingest, app: observability, base: 60, growth: 0.01, noise: 0.05}
+  - {account: prod-core, region: us-east-1, sku: eks_cluster_hours, app: platform, base: 2, noise: 0}
+  - {account: prod-core, region: us-west-2, sku: ec2_c6i_xlarge, app: workers, base: 10, growth: 0.01, weekend: 0.8, noise: 0.05}
+  - {account: prod-core, region: us-west-2, sku: ec2_m6i_large, app: web-api, base: 10, growth: 0.01, weekend: 0.85, noise: 0.03}
+  - {account: prod-core, region: us-west-2, sku: ebs_gp3, app: web-api, base: 6000, growth: 0.01, noise: 0.01}
+  - {account: prod-core, region: us-west-2, sku: alb_hours, app: web-api, base: 2, noise: 0}
+  - {account: prod-core, region: us-west-2, sku: nat_hours, app: network, base: 2, noise: 0}
+  - {account: prod-core, region: us-west-2, sku: nat_bytes, app: network, base: 300, growth: 0.01, weekend: 0.7, noise: 0.08}
+  - {account: prod-core, region: eu-west-1, sku: ec2_m6i_large, app: web-api-eu, base: 14, growth: 0.02, weekend: 0.85, noise: 0.03}
+  - {account: prod-core, region: eu-west-1, sku: rds_pg_r6g_large, app: orders-db-eu, base: 2, noise: 0}
+  - {account: prod-core, region: eu-west-1, sku: data_transfer_out, app: web-api-eu, base: 600, growth: 0.02, weekend: 0.75, noise: 0.07}
+  - {account: prod-core, region: eu-west-1, sku: ebs_gp3, app: web-api-eu, base: 5000, growth: 0.015, noise: 0.01}
+  - {account: prod-data, region: us-east-1, sku: ec2_r6i_large, app: etl, base: 24, growth: 0.01, month_end: 1.8, noise: 0.05}
+  - {account: prod-data, region: us-east-1, sku: s3_standard_storage, app: data-lake, base: 150000, growth: 0.03, noise: 0.002}
+  - {account: prod-data, region: us-east-1, sku: s3_put_requests, app: data-lake, base: 50000000, growth: 0.02, month_end: 1.5, noise: 0.08}
+  - {account: prod-data, region: us-east-1, sku: nat_hours, app: network, base: 3, noise: 0}
+  - {account: prod-data, region: us-east-1, sku: nat_bytes, app: network, base: 1200, growth: 0.01, month_end: 1.4, noise: 0.08}
+  - {account: prod-data, region: us-east-1, sku: ebs_gp3, app: etl, base: 30000, growth: 0.02, noise: 0.01}
+  - {account: prod-data, region: us-west-2, sku: s3_standard_storage, app: data-lake-replica, base: 90000, growth: 0.02, noise: 0.002}
+  - {account: prod-data, region: us-west-2, sku: ec2_r6i_large, app: etl-replica, base: 8, growth: 0.01, month_end: 1.5, noise: 0.05}
+  - {account: staging, region: us-east-1, sku: ec2_m6i_large, app: web-api, base: 10, weekend: 0.5, noise: 0.05}
+  - {account: staging, region: us-east-1, sku: rds_pg_r6g_large, app: orders-db, base: 1, noise: 0}
+  - {account: staging, region: us-east-1, sku: cloudwatch_logs_ingest, app: observability, base: 25, weekend: 0.6, noise: 0.08}
+  - {account: staging, region: us-east-1, sku: eks_cluster_hours, app: platform, base: 1, noise: 0}
+  - {account: staging, region: us-east-1, sku: ebs_gp3, app: web-api, base: 4000, noise: 0.01}
+  - {account: dev-sandbox, region: ap-south-1, sku: ec2_m6i_large, app: sandbox, base: 8, weekend: 0.3, noise: 0.1}
+  - {account: dev-sandbox, region: ap-south-1, sku: rds_pg_r6g_large, app: sandbox-db, base: 0, noise: 0}
+  - {account: dev-sandbox, region: ap-south-1, sku: ebs_gp3, app: sandbox, base: 2000, noise: 0.02}
+  - {account: dev-sandbox, region: us-east-1, sku: ec2_c6i_xlarge, app: sandbox, base: 6, weekend: 0.3, noise: 0.1}
+  - {account: dev-sandbox, region: us-east-1, sku: elasticache_r6g_large, app: sandbox-cache, base: 6, noise: 0}
+  - {account: shared-services, region: us-east-1, sku: eks_cluster_hours, app: tooling, base: 1, noise: 0}
+  - {account: shared-services, region: us-east-1, sku: ec2_m6i_large, app: ci-runners, base: 6, weekend: 0.4, noise: 0.08}
+  - {account: shared-services, region: us-east-1, sku: cloudwatch_logs_ingest, app: observability, base: 40, noise: 0.05}
+  - {account: shared-services, region: us-east-1, sku: s3_standard_storage, app: artifacts, base: 20000, growth: 0.02, noise: 0.002}
+
+# 1-year No Upfront reserved capacity, amortized into matching usage rows.
+commitments:
+  - {id: ri-ec2-m6i-use1, account: prod-core, region: us-east-1, sku: ec2_m6i_large, count: 36, start: 2024-07-01, end: 2026-06-30}
+  - {id: ri-rds-pg-use1, account: prod-core, region: us-east-1, sku: rds_pg_r6g_large, count: 3, start: 2025-01-01, end: 2026-12-31}
+  - {id: ri-cache-use1, account: prod-core, region: us-east-1, sku: elasticache_r6g_large, count: 3, start: 2025-01-01, end: 2026-12-31}
+
+# Ground truth for RCA evaluation. factor multiplies quantity; add adds running count or quantity.
+incidents:
+  - {id: INC-01, kind: spike, account: prod-core, region: us-west-2, sku: ec2_c6i_xlarge, start: 2025-11-12, end: 2025-11-17, factor: 4.0,
+     cause: Autoscaling group max capacity misconfigured after a deploy; workers scaled out and never scaled in}
+  - {id: INC-02, kind: spike, account: prod-core, region: eu-west-1, sku: data_transfer_out, start: 2025-08-20, end: 2025-08-22, factor: 5.0,
+     cause: CDN cache purge sent all EU traffic to origin}
+  - {id: INC-03, kind: spike, account: prod-data, region: us-east-1, sku: nat_bytes, start: 2026-02-03, end: 2026-02-11, factor: 10.0,
+     cause: ETL job pulled from S3 through the NAT gateway because the S3 gateway endpoint route was removed}
+  - {id: INC-04, kind: level_shift, account: dev-sandbox, region: ap-south-1, sku: rds_pg_r6g_large, start: 2026-03-10, end: 2026-04-08, add: 6,
+     cause: Load-test databases left running in the sandbox account}
+  - {id: INC-05, kind: spike, account: staging, region: us-east-1, sku: cloudwatch_logs_ingest, start: 2026-05-05, end: 2026-05-08, factor: 8.0,
+     cause: Debug log level enabled in staging and not reverted}
+  - {id: INC-06, kind: spike, account: prod-core, region: us-east-1, sku: lambda_gb_seconds, start: 2026-08-14, end: 2026-08-14, factor: 20.0,
+     cause: Recursive Lambda invocation loop between an S3 trigger and its own output prefix}
+  - {id: INC-07, kind: level_shift, account: prod-data, region: us-west-2, sku: s3_standard_storage, start: 2025-10-01, end: 2026-09-30, factor: 1.4,
+     cause: Replication rule widened to include the raw zone}
+  - {id: INC-08, kind: drop, account: dev-sandbox, region: us-east-1, sku: elasticache_r6g_large, start: 2026-01-15, end: 2026-09-30, factor: 0.0,
+     cause: Unused sandbox cache cluster deleted during a cleanup}
+  - {id: INC-09, kind: commitment_expiry, account: prod-core, region: us-east-1, sku: ec2_m6i_large, start: 2026-07-01, end: 2026-09-30, commitment: ri-ec2-m6i-use1,
+     cause: Reserved Instances for the web-api fleet expired and were not renewed; usage moved to on-demand rates}
